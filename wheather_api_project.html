@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Pro</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        transition: 0.8s;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1000px;
+      }
+
+      .weather-card {
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 30px;
+        color: white;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      }
+
+      .header {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .search-box {
+        flex: 1;
+        height: 60px;
+        border: none;
+        outline: none;
+        border-radius: 15px;
+        padding: 0 20px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+
+      .search-box::placeholder {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .search-btn {
+        width: 60px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        background: white;
+        font-size: 20px;
+        transition: 0.3s;
+      }
+
+      .search-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .main-weather {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+      }
+
+      .city {
+        font-size: 2rem;
+        font-weight: 600;
+      }
+
+      .date {
+        opacity: 0.9;
+        margin-top: 5px;
+      }
+
+      .temp {
+        font-size: 5rem;
+        font-weight: 700;
+      }
+
+      .condition {
+        font-size: 1.2rem;
+      }
+
+      .weather-icon {
+        width: 120px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .stat {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 20px;
+        border-radius: 18px;
+        text-align: center;
+      }
+
+      .stat h3 {
+        font-size: 14px;
+        opacity: 0.8;
+      }
+
+      .stat p {
+        margin-top: 8px;
+        font-size: 22px;
+        font-weight: 600;
+      }
+
+      .forecast-title {
+        margin-bottom: 20px;
+      }
+
+      .forecast {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+      }
+
+      .forecast-card {
+        background: rgba(255, 255, 255, 0.12);
+        padding: 20px;
+        border-radius: 18px;
+        text-align: center;
+      }
+
+      .forecast-card img {
+        width: 60px;
+      }
+
+      .forecast-temp {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .loader {
+        display: none;
+        text-align: center;
+        font-size: 20px;
+        margin: 20px 0;
+      }
+
+      .error {
+        text-align: center;
+        color: #ffdddd;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .temp {
+          font-size: 4rem;
+        }
+
+        .city {
+          font-size: 1.6rem;
+        }
+
+        .main-weather {
+          text-align: center;
+          justify-content: center;
+          gap: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="weather-card">
+        <div class="header">
+          <input
+            type="text"
+            id="cityInput"
+            class="search-box"
+            placeholder="Search city..." />
+
+          <button class="search-btn" onclick="getWeather()">🔍</button>
+        </div>
+
+        <div class="loader" id="loader">Loading weather...</div>
+
+        <div class="error" id="error"></div>
+
+        <div id="weatherContent" style="display: none">
+          <div class="main-weather">
+            <div>
+              <div class="city" id="city"></div>
+              <div class="date" id="localtime"></div>
+            </div>
+
+            <div>
+              <img id="icon" class="weather-icon" />
+            </div>
+
+            <div>
+              <div class="temp" id="temp"></div>
+              <div class="condition" id="condition"></div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <h3>Feels Like</h3>
+              <p id="feelsLike"></p>
+            </div>
+
+            <div class="stat">
+              <h3>Humidity</h3>
+              <p id="humidity"></p>
+            </div>
+
+            <div class="stat">
+              <h3>Wind Speed</h3>
+              <p id="wind"></p>
+            </div>
+          </div>
+
+          <h2 class="forecast-title">3-Day Forecast</h2>
+
+          <div class="forecast" id="forecast"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_KEY = "133a643ec4094b8580752243260106";
+
+      const cityInput = document.getElementById("cityInput");
+
+      cityInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          getWeather();
+        }
+      });
+
+      async function getWeather(city = cityInput.value || "Pune") {
+        const loader = document.getElementById("loader");
+        const error = document.getElementById("error");
+
+        loader.style.display = "block";
+        error.textContent = "";
+
+        try {
+          const response = await fetch(
+            `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=3&aqi=yes&alerts=yes`,
+          );
+
+          const data = await response.json();
+
+          if (data.error) {
+            throw new Error(data.error.message);
+          }
+
+          document.getElementById("weatherContent").style.display = "block";
+
+          document.getElementById("city").innerText =
+            `${data.location.name}, ${data.location.country}`;
+
+          document.getElementById("localtime").innerText =
+            data.location.localtime;
+
+          document.getElementById("temp").innerText =
+            `${Math.round(data.current.temp_c)}°C`;
+
+          document.getElementById("condition").innerText =
+            data.current.condition.text;
+
+          document.getElementById("icon").src =
+            "https:" + data.current.condition.icon;
+
+          document.getElementById("feelsLike").innerText =
+            `${Math.round(data.current.feelslike_c)}°C`;
+
+          document.getElementById("humidity").innerText =
+            `${data.current.humidity}%`;
+
+          document.getElementById("wind").innerText =
+            `${data.current.wind_kph} km/h`;
+
+          const forecastContainer = document.getElementById("forecast");
+
+          forecastContainer.innerHTML = "";
+
+          data.forecast.forecastday.forEach((day) => {
+            forecastContainer.innerHTML += `
+                <div class="forecast-card">
+
+                    <h4>
+                        ${new Date(day.date).toLocaleDateString("en-US", {
+                          weekday: "short",
+                        })}
+                    </h4>
+
+                    <img src="https:${day.day.condition.icon}">
+
+                    <div class="forecast-temp">
+                        ${Math.round(day.day.avgtemp_c)}°C
+                    </div>
+
+                    <p>
+                        ${day.day.condition.text}
+                    </p>
+
+                </div>
+            `;
+          });
+
+          updateBackground(data.current.condition.text.toLowerCase());
+        } catch (err) {
+          error.textContent = "❌ " + err.message;
+        } finally {
+          loader.style.display = "none";
+        }
+      }
+
+      function updateBackground(condition) {
+        if (condition.includes("sun")) {
+          document.body.style.background =
+            "linear-gradient(135deg,#f6d365,#fda085)";
+        } else if (condition.includes("rain")) {
+          document.body.style.background =
+            "linear-gradient(135deg,#4facfe,#00f2fe)";
+        } else if (condition.includes("cloud")) {
+          document.body.style.background =
+            "linear-gradient(135deg,#bdc3c7,#2c3e50)";
+        } else if (condition.includes("snow")) {
+          document.body.style.background =
+            "linear-gradient(135deg,#e6dada,#274046)";
+        } else {
+          document.body.style.background =
+            "linear-gradient(135deg,#667eea,#764ba2)";
+        }
+      }
+
+      getWeather("Pune");
+    </script>
+  </body>
+</html>
