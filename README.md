@@ -8,11 +8,11 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
 ---
-<!--
+
 ## 🚀 Live Demo
 
-> 🔗 **[View Live →](https://atharvathawkar.github.io/weather-pro)** *(update link after deployment)*
--->
+> 🔗 **[View Live →](https://willowy-truffle-8c1625.netlify.app/)**
+
 ---
 
 ## 📸 Preview
@@ -143,7 +143,7 @@ weather-pro/
 **Atharva Pramod Thawkar**
 - 🎓 Final Year B.E. IT — SIPNA College of Engineering, Amravati
 - 💼 Aspiring MERN Stack Developer | Open to Opportunities
-- 🔗 [GitHub](https://github.com/AtharvaThawkar) · [LinkedIn](https://linkedin.com/in/atharva-t-8b6620261) · [LeetCode](https://leetcode.com/u/Atharva_Thawkar/)
+- 🔗 [GitHub](https://github.com/AtharvaThawkar) · [LinkedIn](https://linkedin.com/in/atharvathawkar) · [LeetCode](https://leetcode.com/u/Atharva_Thawkar/)
 
 ---
 
